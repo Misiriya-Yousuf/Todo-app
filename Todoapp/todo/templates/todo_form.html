@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto bg-base-100 p-6 rounded-lg shadow-md">
+    <h1 class="text-2xl font-bold mb-4">{% if form.instance.pk %}Edit{% else %}Add{% endif %} Task</h1>
+    <!-- Todo Title -->
+    <h1 class="text-2xl font-bold mb-4 text-base-content">{{ todo.title }}</h1>
+
+    <!-- Todo Description -->
+    <p class="text-gray-700 dark:text-gray-300 mb-4">{{ todo.description }}</p>
+
+    <!-- Todo Status -->
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        Status: {% if todo.completed %}
+        <span class="text-green-500">Completed</span>
+        {% else %}
+        <span class="text-red-500">Not Completed</span>
+        {% endif %}
+    </p>
+
+    <!-- Todo Due Date -->
+    <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+        Due Date: {% if todo.due_date %}
+        <span class="font-semibold">{{ todo.due_date }}</span>
+        {% else %}
+        <span class="text-gray-400">No due date set</span>
+        {% endif %}
+    </p>
+
+    <!-- Form for Editing Todo -->
+    <form method="post" class="mt-6 space-y-4">
+        {% csrf_token %}
+        
+        <!-- Title Field -->
+        <div class="form-control">
+            <label for="title" class="label">
+                <span class="label-text text-base-content">Title</span>
+            </label>
+            <input type="text" id="title" name="title" value="{{ todo.title }}" class="input input-bordered w-full text-base-content" />
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-control">
+            <label for="description" class="label">
+                <span class="label-text text-base-content">Description</span>
+            </label>
+            <textarea id="description" name="description" class="textarea textarea-bordered w-full text-base-content">{{ todo.description }}</textarea>
+        </div>
+
+        <div class="form-control">
+            <label for="id_due_date" class="label">
+                <span class="label-text text-base-content">Due Date and Time</span>
+            </label>
+            <input type="datetime-local" id="id_due_date" name="due_date" value="{{ form.due_date.value|date:'Y-m-d\TH:i' }}" class="input input-bordered w-full text-base-content" />
+        </div>
+
+        <!-- Completed Checkbox -->
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text text-base-content">Completed</span>
+                <input type="checkbox" name="completed" class="checkbox" {% if todo.completed %}checked{% endif %} />
+            </label>
+        </div>
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary w-full text-white">
+            Save 
+        </button>
+    </form>
+     <!-- Back to List Button -->
+</div>
+{% endblock %}
